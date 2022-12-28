@@ -1,0 +1,152 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+
+struct Student
+{
+	char name[100];
+	char number[13];
+	char sex;
+	int age;
+	struct Student* next;
+};
+
+struct Student* head = NULL;
+struct Student* tail = NULL;
+
+
+void print_student(void)
+{
+	struct Student* current_student = head;
+	while(current_student != NULL)
+	{
+		printf("이름: %s\n", current_student->name);
+		printf("연락처: %s\n", current_student->number);
+		printf("성별: %c\n", current_student->sex);
+		printf("나이: %d\n", current_student->age);
+		current_student = current_student->next;
+	}
+}
+
+void find_student(void)
+{
+	char name[100];
+	printf("조회할 이름 입력");
+	scanf("%s", name);
+	struct Student* current_student = head;
+	while(current_student != NULL){
+		if(strcmp(name, current_student->name)==0)
+		{
+			printf("이름: %s\n", current_student->name);
+			printf("연락처: %s\n", current_student->number);
+			printf("성별: %c\n", current_student->sex);
+			printf("나이: %d\n", current_student->age);
+			return;
+		}
+		current_student = current_student->next;
+	}
+}
+
+void remove_student(void)
+{
+	char name[100];
+	printf("삭제할 이름 입력");
+	scanf("%s", name);
+	struct Student* current_student = head;
+	struct Student* prev_student = head;
+	while(current_student != NULL){
+		if(strcmp(name, current_student->name)==0)
+		{
+			if(current_student==head){
+				head = current_student->next;
+				free(current_student);
+			}
+			else{
+				prev_student->next = current_student->next;
+				free(current_student);
+			}
+			return;
+		}
+		if(current_student==head)
+		{
+			current_student = current_student->next;
+		}
+		else{
+			current_student = current_student->next;
+			prev_student = current_student;
+		}
+	}
+}
+
+void put_student(void)
+{
+
+	struct Student* new_student = (struct Student* )malloc(sizeof(struct Student));
+
+
+	new_student->next = NULL;
+	printf("이름을 입력하세요 :" );
+	scanf("%s", new_student->name); 
+	printf("연락처를 입력하세요 :" );
+	scanf("%s", new_student->number); 
+	printf("성별을 입력하세요 :" );
+	scanf(" %c", &new_student->sex); 
+	printf("나이를 입력하세요 :" );
+	scanf("%d", &new_student->age);
+	if(tail != NULL){
+		tail->next = new_student;
+		tail = new_student;
+	}
+	if(head == NULL)
+	{
+		head = new_student;
+		tail = head;
+	}
+}
+
+
+void result(int a)
+{
+	if(a==1)
+		put_student();
+	else if(a==2)
+		print_student();
+	else if(a==3)
+		find_student();
+	else if(a==4)
+		remove_student();
+}
+
+void check_menu_number(int a)
+{
+	if(a<1||a>6)
+		print_menu();
+	else
+		result(a);
+}
+
+int print_menu(void)
+{
+	int select_number;
+		
+	
+	printf("1) 개별 신상 정보 입력\n");
+	printf("2) 전체 신상 정보 출력\n");
+	printf("3) 개별 신상 정보 조회\n");
+	printf("4) 개별 신상 정보 삭제\n");
+ 	printf("5) 프로그램 종료\n");
+	scanf("%d", &select_number);
+	if(select_number==5)
+		return 0;
+	check_menu_number(select_number);
+	return 1;
+}
+
+
+int main(void)
+{
+	while(print_menu()){
+		
+	}
+	return 0;
+}
